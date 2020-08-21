@@ -1,0 +1,70 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .default {
+      width: 80%;
+      height: 30rem;
+      background-color:darkslateblue;
+      margin: 5% auto;
+      color:white;
+      font-size: 900%;
+      text-align: center;
+      line-height: 30rem;
+    }
+    .active {
+      background-color: mediumslateblue;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel" class="default"></div>
+  <script>
+    const reminder = new Audio('./assets/reminder.mp3')
+    const alarm = new Audio('./assets/alarm.mp3')
+    const panel = document.getElementById('panel')
+    const ALARM_THRESHOLD = 42
+    let is_alarm_has_fire = 0
+    let defaultSeconds = 1800
+
+    panel.addEventListener('click', clickHandler)
+
+    function clickHandler () {
+      panel.className += ' active'
+      startCountdown(+panel.textContent || 0)
+    }
+
+    function resetStatus () {
+      updateUI(defaultSeconds)
+      is_alarm_has_fire = 0
+      panel.className = 'default'
+    }
+
+    function updateUI (seconds) {
+      panel.textContent = seconds
+    }
+
+    function playSound (seconds) {
+      if (is_alarm_has_fire) return
+      (+seconds <= ALARM_THRESHOLD) ? (is_alarm_has_fire++, alarm.play()) : reminder.play()
+    }
+
+    function startCountdown(seconds) {
+      const timer = setInterval(() => {
+        if (seconds <= 0) {
+          clearInterval(timer)
+          resetStatus()
+          return
+        }
+
+        playSound(seconds)
+        updateUI(--seconds)
+
+      }, 1000);
+    }
+
+    resetStatus()
+  </script>
+</body>
+</html>
