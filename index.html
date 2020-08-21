@@ -26,13 +26,21 @@
     const panel = document.getElementById('panel')
     const ALARM_THRESHOLD = 42
     let is_alarm_has_fire = 0
-    let defaultSeconds = 1800
+    let defaultSeconds = 300
 
     panel.addEventListener('click', clickHandler)
 
     function clickHandler () {
+      loadAudios()
+      alarm.load()
       panel.className += ' active'
       startCountdown(+panel.textContent || 0)
+    }
+
+    panel.addEventListener('loadAudios', loadAudios)
+
+    function loadAudios () {
+      reminder.load()
     }
 
     function resetStatus () {
@@ -46,6 +54,7 @@
     }
 
     function playSound (seconds) {
+      panel.dispatchEvent(new Event('loadAudios'))
       if (is_alarm_has_fire) return
       (+seconds <= ALARM_THRESHOLD) ? (is_alarm_has_fire++, alarm.play()) : reminder.play()
     }
