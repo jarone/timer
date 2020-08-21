@@ -9,6 +9,9 @@
       text-align: center;
       line-height: 40rem;
     }
+    .unit {
+      font-size:60%;
+    }
     .active {
       color: mediumslateblue;
     }
@@ -22,10 +25,13 @@
   </style>
 </head>
 <body class="default">
+  <span id="container"></span>
+  <span class="unit">s</span>
   <script>
     const reminder = new Audio('./assets/reminder.mp3')
     const alarm = new Audio('./assets/alarm.mp3')
     const panel = document.body
+    const container = document.getElementById('container')
     const ALARM_THRESHOLD = 42
     const defaultSeconds = 300
     let is_alarm_has_fire = 0
@@ -45,7 +51,7 @@
       loadAudios()
       alarm.load()
       panel.className += ' active'
-      startCountdown(+panel.textContent || 0)
+      startCountdown(+container.textContent || 0)
     }
 
     panel.addEventListener('loadAudios', loadAudios)
@@ -55,13 +61,13 @@
     }
 
     function resetStatus () {
-      updateUI(defaultSeconds)
+      updateTime(defaultSeconds)
       is_alarm_has_fire = 0
       checkDarkmode()
     }
 
-    function updateUI (seconds) {
-      panel.textContent = seconds
+    function updateTime (seconds) {
+      container.textContent = seconds
     }
 
     function playSound (seconds) {
@@ -79,7 +85,7 @@
         }
 
         playSound(seconds)
-        updateUI(--seconds)
+        updateTime(--seconds)
 
       }, 1000);
     }
