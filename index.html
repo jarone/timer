@@ -4,29 +4,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     .default {
-      width: 80%;
-      height: 30rem;
-      background-color:darkslateblue;
-      margin: 5% auto;
-      color:white;
+      color:darkslateblue;
       font-size: 900%;
       text-align: center;
-      line-height: 30rem;
+      line-height: 40rem;
     }
     .active {
+      color: mediumslateblue;
+    }
+    .dark {
+      background-color: darkslateblue;
+      color:white;
+    }
+    .dark.active {
       background-color: mediumslateblue;
     }
   </style>
 </head>
-<body>
-  <div id="panel" class="default"></div>
+<body class="default">
   <script>
     const reminder = new Audio('./assets/reminder.mp3')
     const alarm = new Audio('./assets/alarm.mp3')
-    const panel = document.getElementById('panel')
+    const panel = document.body
     const ALARM_THRESHOLD = 42
+    const defaultSeconds = 300
     let is_alarm_has_fire = 0
-    let defaultSeconds = 300
+
+    function isNight () {
+      const hours = (new Date()).getHours()
+      return (hours >= 20) || (hours <= 6)
+    }
+
+    function checkDarkmode () {
+      isNight() ? (panel.className += ' dark') : (panel.className = 'default')
+    }
 
     panel.addEventListener('click', clickHandler)
 
@@ -46,7 +57,7 @@
     function resetStatus () {
       updateUI(defaultSeconds)
       is_alarm_has_fire = 0
-      panel.className = 'default'
+      checkDarkmode()
     }
 
     function updateUI (seconds) {
