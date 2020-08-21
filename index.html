@@ -34,7 +34,7 @@
     const container = document.getElementById('container')
     const ALARM_THRESHOLD = 42
     const defaultSeconds = 300
-    let is_alarm_has_fire = 0
+    let isAlarmHasFired = 0
 
     function isNight () {
       const hours = (new Date()).getHours()
@@ -62,7 +62,7 @@
 
     function resetStatus () {
       updateTime(defaultSeconds)
-      is_alarm_has_fire = 0
+      isAlarmHasFired = 0
       checkDarkmode()
     }
 
@@ -72,8 +72,8 @@
 
     function playSound (seconds) {
       panel.dispatchEvent(new Event('loadAudios'))
-      if (is_alarm_has_fire) return
-      (+seconds <= ALARM_THRESHOLD) ? (is_alarm_has_fire++, alarm.play()) : reminder.play()
+      if (isAlarmHasFired) return
+      (+seconds <= ALARM_THRESHOLD) ? (isAlarmHasFired++, alarm.play()) : reminder.play()
     }
 
     function startCountdown(seconds) {
